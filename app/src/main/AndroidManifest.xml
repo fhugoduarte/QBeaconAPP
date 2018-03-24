@@ -25,8 +25,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.CadastroActivity"
-                  android:label="Cadastro"></activity>
+        <activity
+            android:name=".Activities.CadastroActivity"
+            android:label="Cadastro" />
+        <activity
+            android:name=".Activities.MenuActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

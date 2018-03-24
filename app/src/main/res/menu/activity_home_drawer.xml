@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item android:title="Ações">
+            <menu>
+                <item
+                    android:id="@+id/navHome"
+                    android:icon="@drawable/ic_home_black_24dp"
+                    android:title="Home"/>
+                <item
+                    android:id="@+id/navMinhasTurmas"
+                    android:icon="@drawable/ic_star_black_24dp"
+                    android:title="Minhas Turmas"/>
+
+                <item
+                    android:id="@+id/navTodasTurmas"
+                    android:icon="@drawable/ic_school_black_24dp"
+                    android:title="Todas Turmas" />
+
+                <item
+                    android:id="@+id/navDisciplinas"
+                    android:icon="@drawable/ic_library_books_black_24dp"
+                    android:title="Disciplinas" />
+
+            </menu>
+        </item>
+    </group>
+
+</menu>

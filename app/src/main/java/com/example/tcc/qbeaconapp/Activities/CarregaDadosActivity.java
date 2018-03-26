@@ -4,7 +4,9 @@ package com.example.tcc.qbeaconapp.Activities;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import com.example.tcc.qbeaconapp.Datas.AuthToken;
 import com.example.tcc.qbeaconapp.Datas.DisciplinaData;
 import com.example.tcc.qbeaconapp.Datas.MensagemRetorno;
 import com.example.tcc.qbeaconapp.Datas.TurmaData;
+import com.example.tcc.qbeaconapp.R;
 import com.example.tcc.qbeaconapp.Services.Config;
 import com.example.tcc.qbeaconapp.Services.DisciplinaService;
 import com.example.tcc.qbeaconapp.Services.ServiceGenerator;
@@ -29,12 +32,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CarregaDadosActivity extends AppCompatActivity {
 
-    private ProgressBar progressBar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_carrega_dados);
+        Handler handler =  new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                atualizarDados();
+            }
+        }, 2000);
     }
 
     private void atualizarDados(){
@@ -55,13 +63,17 @@ public class CarregaDadosActivity extends AppCompatActivity {
         call.enqueue(new Callback<MensagemRetorno>() {
             @Override
             public void onResponse(Call<MensagemRetorno> call, Response<MensagemRetorno> response) {
-                if(response.isSuccessful() && response.body().getMensagem() == Config.TOKEN_VALIDO){
+
+                if(response.isSuccessful() && response.body().getMensagem().equals(Config.TOKEN_VALIDO)){
                     setTodasTurmas(token);
                     setMinhasTurmas(token);
                     setDisciplinas(token);
+                    Intent intent = new Intent(CarregaDadosActivity.this, MenuActivity.class);
+                    startActivity(intent);
+                }else {
+                    Intent intent = new Intent(CarregaDadosActivity.this, LoginActivity.class);
+                    startActivity(intent);
                 }
-                Intent intent = new Intent(CarregaDadosActivity.this, LoginActivity.class);
-                startActivity(intent);
             }
 
             @Override

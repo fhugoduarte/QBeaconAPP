@@ -17,26 +17,30 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.LoginActivity"
-            android:label="Login">
+            android:name=".Activities.CarregaDadosActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label=""
+            android:theme="@style/FullscreenTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:label="Login"/>
+
         <activity
             android:name=".Activities.CadastroActivity"
             android:label="Cadastro" />
+
         <activity
             android:name=".Activities.MenuActivity"
             android:label="@string/title_activity_home"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activities.CarregaDadosActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_carrega_dados"
-            android:theme="@style/FullscreenTheme"></activity>
     </application>
 
 </manifest>

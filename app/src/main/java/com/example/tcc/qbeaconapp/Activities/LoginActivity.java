@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
                             Config.SUCESSO_LOGIN_USUARIO,
                             Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(LoginActivity.this, MenuActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, CarregaDadosActivity.class);
                     startActivity(intent);
 
                 }else{

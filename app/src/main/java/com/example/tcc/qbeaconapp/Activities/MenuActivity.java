@@ -149,10 +149,10 @@ public class MenuActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(getBaseContext(),
-                    "SETTINGS",
-                    Toast.LENGTH_SHORT).show();
+        if (id == R.id.action_atualizar) {
+            Intent intent = new Intent(MenuActivity.this, CarregaDadosActivity.class);
+            startActivity(intent);
+
             return true;
         }
 

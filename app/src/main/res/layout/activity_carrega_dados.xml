@@ -17,13 +17,21 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="70dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_qbeacon" />
+
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/app_bar_height"/>
+                android:layout_marginTop="50dp"/>
 
             <TextView
                 android:id="@+id/textView"

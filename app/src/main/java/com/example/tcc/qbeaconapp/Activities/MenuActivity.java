@@ -1,8 +1,10 @@
 package com.example.tcc.qbeaconapp.Activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -104,6 +106,24 @@ public class MenuActivity extends AppCompatActivity
 
     }
 
+    public void logout(){
+
+        SharedPreferences sharedPreferences = getSharedPreferences(Config.TOKEN_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+
+        sharedPreferences = getSharedPreferences(Config.DISCIPLINAS_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+
+        sharedPreferences = getSharedPreferences(Config.TODAS_TURMAS_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+
+        sharedPreferences = getSharedPreferences(Config.MINHAS_TURMAS_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+
+        sharedPreferences = getSharedPreferences(Config.USER_KEY, Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+    }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -175,7 +195,11 @@ public class MenuActivity extends AppCompatActivity
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentLayout, fragment);
                 fragmentTransaction.commit();
-            }else{
+            } else if (id == R.id.logout){
+                logout();
+                Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
+                startActivity(intent);
+            } else{
                 toolbar.setTitle("Home");
                 fragment = new HomeFragment();
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();

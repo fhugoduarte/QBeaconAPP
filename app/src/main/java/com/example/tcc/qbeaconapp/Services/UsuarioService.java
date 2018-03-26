@@ -1,5 +1,6 @@
 package com.example.tcc.qbeaconapp.Services;
 
+import com.example.tcc.qbeaconapp.Datas.AuthToken;
 import com.example.tcc.qbeaconapp.Datas.MensagemRetorno;
 import com.example.tcc.qbeaconapp.Datas.UsuarioData;
 
@@ -27,6 +28,10 @@ public interface UsuarioService {
     @Headers("Content-Type: application/json")
     @GET("usuario")
     Call<UsuarioData>buscar();
+
+    @Headers("Content-Type: application/json")
+    @POST("usuario/validartoken")
+    Call<MensagemRetorno>validarToken(@Body AuthToken token);
 }
 
 

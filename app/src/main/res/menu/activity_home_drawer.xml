@@ -18,12 +18,16 @@
                 <item
                     android:id="@+id/navTodasTurmas"
                     android:icon="@drawable/ic_school_black_24dp"
-                    android:title="Todas Turmas" />
+                    android:title="Turmas" />
 
                 <item
                     android:id="@+id/navDisciplinas"
                     android:icon="@drawable/ic_library_books_black_24dp"
                     android:title="Disciplinas" />
+                <item
+                    android:id="@+id/navSalas"
+                    android:icon="@drawable/ic_edit_location_black_24dp"
+                    android:title="Salas" />
 
             </menu>
         </item>

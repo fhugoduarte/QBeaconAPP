@@ -67,6 +67,6 @@ public class TurmaData {
 
     @Override
     public String toString() {
-        return professor + " - " + disciplina;
+        return professor + "( " + disciplina + " )";
     }
 }

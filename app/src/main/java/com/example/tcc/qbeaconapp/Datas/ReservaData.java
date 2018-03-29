@@ -1,5 +1,6 @@
 package com.example.tcc.qbeaconapp.Datas;
 
+
 /**
  * Created by hugoduarte on 26/03/18.
  */
@@ -53,6 +54,11 @@ public class ReservaData {
 
     public void setTurma(String turma) {
         this.turma = turma;
+    }
+
+    @Override
+    public String toString() {
+        return "Sala: " + sala + "\n " + "Horario: " + horario + "\n" + "Turma: " + turma;
     }
 
 }

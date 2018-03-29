@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,10 +16,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tcc.qbeaconapp.Datas.UsuarioData;
 import com.example.tcc.qbeaconapp.R;
+import com.example.tcc.qbeaconapp.Services.Communicator;
 import com.example.tcc.qbeaconapp.Services.Config;
 import com.example.tcc.qbeaconapp.Services.ServiceGenerator;
 import com.example.tcc.qbeaconapp.Services.UsuarioService;
@@ -31,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MenuActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Communicator {
 
     private TextView nome;
     private TextView email;
@@ -195,6 +194,12 @@ public class MenuActivity extends AppCompatActivity
                 fragmentTransaction = getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.fragmentLayout, fragment);
                 fragmentTransaction.commit();
+            } else if (id == R.id.navSalas) {
+                toolbar.setTitle("Salas");
+                fragment = new SalasFragment();
+                fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.fragmentLayout, fragment);
+                fragmentTransaction.commit();
             } else if (id == R.id.logout){
                 logout();
                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
@@ -211,5 +216,19 @@ public class MenuActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void responde(int id, Fragment fragment, String titulo) {
+
+       Bundle bundle =  new Bundle();
+       bundle.putInt("id", id);
+
+       toolbar.setTitle(titulo);
+       fragment.setArguments(bundle);
+       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+       fragmentTransaction.replace(R.id.fragmentLayout, fragment);
+       fragmentTransaction.commit();
+
     }
 }

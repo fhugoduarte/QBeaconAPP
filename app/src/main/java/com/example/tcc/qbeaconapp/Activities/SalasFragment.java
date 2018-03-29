@@ -4,27 +4,24 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tcc.qbeaconapp.Datas.DisciplinaData;
 import com.example.tcc.qbeaconapp.Datas.ItemListView;
 import com.example.tcc.qbeaconapp.Datas.SalaData;
-import com.example.tcc.qbeaconapp.Datas.TurmaData;
 import com.example.tcc.qbeaconapp.R;
 import com.example.tcc.qbeaconapp.Services.AdapterListView;
 import com.example.tcc.qbeaconapp.Services.Communicator;
 import com.example.tcc.qbeaconapp.Services.Config;
 import com.example.tcc.qbeaconapp.Services.DisciplinaService;
+import com.example.tcc.qbeaconapp.Services.SalaService;
 import com.example.tcc.qbeaconapp.Services.ServiceGenerator;
-import com.example.tcc.qbeaconapp.Services.TurmaService;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -39,112 +36,106 @@ import retrofit2.Response;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * Created by hugoduarte on 24/03/18.
+ * Created by hugoduarte on 28/03/18.
  */
 
-public class TodasTurmasFragment extends Fragment {
+public class SalasFragment extends Fragment {
 
-    private ListView listTodasTurmas;
+    private ListView listSalas;
     private Communicator communicator;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        View view = inflater.inflate(R.layout.fragment_todas_turmas, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_salas, container, false);
 
-        listTodasTurmas = (ListView) view.findViewById(R.id.listTodasTurmas);
+        listSalas = (ListView) view.findViewById(R.id.listSalas);
         communicator = (Communicator) getActivity();
 
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(Config.TODAS_TURMAS_KEY, MODE_PRIVATE);
-        String turmasJson =  sharedPreferences.getString(Config.TODAS_TURMAS_KEY, "");
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(Config.SALAS_KEY, MODE_PRIVATE);
+        String salasJson =  sharedPreferences.getString(Config.SALAS_KEY, "");
 
-        if(turmasJson == ""){
-            setTurmas();
+        if(salasJson == ""){
+            setSalas();
         }else{
-            adicionaTurmas(turmasJson);
+            adicionaSalas(salasJson);
         }
 
-        return(view);
+        return view;
     }
 
-    private void setTurmas(){
+    private void setSalas(){
 
         final FragmentActivity fragment = this.getActivity();
 
         SharedPreferences sharedPreferences = fragment.getSharedPreferences(Config.TOKEN_KEY, MODE_PRIVATE);
         String token = sharedPreferences.getString(Config.TOKEN_KEY, "");
 
-        TurmaService turmaService =
-                ServiceGenerator.createService(TurmaService.class, token);
+        SalaService salaService =
+                ServiceGenerator.createService(SalaService.class, token);
 
-        Call<List<TurmaData>> call = turmaService.listar();
-        call.enqueue(new Callback<List<TurmaData>>() {
+        Call<List<SalaData>> call = salaService.listar();
+        call.enqueue(new Callback<List<SalaData>>() {
             @Override
-            public void onResponse(Call<List<TurmaData>> call, Response<List<TurmaData>> response) {
+            public void onResponse(Call<List<SalaData>> call, Response<List<SalaData>> response) {
                 SharedPreferences sharedPreferences1 =
-                        fragment.getSharedPreferences(Config.TODAS_TURMAS_KEY, MODE_PRIVATE);
+                        fragment.getSharedPreferences(Config.SALAS_KEY, MODE_PRIVATE);
 
                 if(response.isSuccessful()){
-
                     Gson gson = new Gson();
 
-                    String turmas = gson.toJson(response.body());
+                    String salas = gson.toJson(response.body());
 
                     SharedPreferences.Editor editor =
                             sharedPreferences1.edit();
-                    editor.putString(Config.TODAS_TURMAS_KEY, turmas);
+                    editor.putString(Config.SALAS_KEY, salas);
                     editor.commit();
 
-                    adicionaTurmas(turmas);
-                }else {
-
+                    adicionaSalas(salas);
+                }else{
                     SharedPreferences.Editor editor =
                             sharedPreferences1.edit();
-                    editor.putString(Config.TODAS_TURMAS_KEY, "");
+                    editor.putString(Config.SALAS_KEY, "");
                     editor.commit();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<TurmaData>> call, Throwable t) {
-
+            public void onFailure(Call<List<SalaData>> call, Throwable t) {
                 SharedPreferences sharedPreferences1 =
-                        fragment.getSharedPreferences(Config.TODAS_TURMAS_KEY, MODE_PRIVATE);
+                        fragment.getSharedPreferences(Config.SALAS_KEY, MODE_PRIVATE);
 
                 SharedPreferences.Editor editor =
                         sharedPreferences1.edit();
-                editor.putString(Config.TODAS_TURMAS_KEY, "");
+                editor.putString(Config.SALAS_KEY, "");
                 editor.commit();
 
                 Toast.makeText(fragment,
-                        "Erro ao recuperar as Turmas!",
+                        "Erro ao recuperar as Salas!",
                         Toast.LENGTH_SHORT).show();
-
             }
         });
-
     }
 
-    private void adicionaTurmas(String turmasJson){
+    public void adicionaSalas(String salasJson){
         Gson gson = new Gson();
 
-        Type collectionType = new TypeToken<List<TurmaData>>(){}.getType();
-        final List<TurmaData> turmas = gson.fromJson(turmasJson, collectionType);
+        Type collectionType = new TypeToken<List<SalaData>>(){}.getType();
+        final List<SalaData> salas = gson.fromJson(salasJson, collectionType);
 
         List<ItemListView> itens = new ArrayList<ItemListView>();
 
-        for (TurmaData turma: turmas) {
-            itens.add(new ItemListView(turma.getId(), turma.toString(), turma.toString(), R.drawable.ic_school_black_24dp));
+        for (SalaData sala: salas) {
+            itens.add(new ItemListView(sala.getId(), sala.getNome(), sala.toString(), R.drawable.ic_edit_location_black_24dp));
         }
 
         AdapterListView adapterListView = new AdapterListView(getContext(), itens);
 
-        listTodasTurmas.setAdapter(adapterListView);
-        listTodasTurmas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listSalas.setAdapter(adapterListView);
+        listSalas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                ItemListView item = (ItemListView) listTodasTurmas.getItemAtPosition(i);
-                communicator.responde(item.getId(), new DetalhesTurmaFragment(), item.getTitulo());
+                ItemListView item = (ItemListView) listSalas.getItemAtPosition(i);
+                communicator.responde(item.getId(), new DetalhesSalaFragment(), item.getTitulo());
             }
         });
     }

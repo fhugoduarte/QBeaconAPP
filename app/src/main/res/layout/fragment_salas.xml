@@ -3,14 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.DisciplinasFragment">
+    tools:context=".Activities.SalasFragment">
 
     <ListView
-        android:id="@+id/listDisciplinas"
+        android:id="@+id/listSalas"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/divider"
-        android:dividerHeight="3sp">
+        android:layout_height="match_parent">
+
     </ListView>
 
 

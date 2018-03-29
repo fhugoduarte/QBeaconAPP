@@ -1,10 +1,12 @@
 package com.example.tcc.qbeaconapp.Activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tcc.qbeaconapp.Datas.DisciplinaData;
+import com.example.tcc.qbeaconapp.Datas.ItemListView;
+import com.example.tcc.qbeaconapp.Datas.TurmaData;
 import com.example.tcc.qbeaconapp.R;
+import com.example.tcc.qbeaconapp.Services.AdapterListView;
+import com.example.tcc.qbeaconapp.Services.Communicator;
 import com.example.tcc.qbeaconapp.Services.Config;
 import com.example.tcc.qbeaconapp.Services.DisciplinaService;
 import com.example.tcc.qbeaconapp.Services.ServiceGenerator;
@@ -40,10 +46,13 @@ import static android.content.Context.MODE_PRIVATE;
 public class DisciplinasFragment extends Fragment {
 
     private ListView listDisciplinas;
+    private Communicator communicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_disciplinas, container, false);
+
+        communicator = (Communicator)getActivity();
 
         listDisciplinas = (ListView) view.findViewById(R.id.listDisciplinas);
 
@@ -124,18 +133,21 @@ public class DisciplinasFragment extends Fragment {
         Type collectionType = new TypeToken<List<DisciplinaData>>(){}.getType();
         final List<DisciplinaData> disciplinas = gson.fromJson(disciplinasJson, collectionType);
 
-        ArrayAdapter<DisciplinaData> adapter =
-                new ArrayAdapter<DisciplinaData>(this.getContext(),
-                        android.R.layout.simple_list_item_1, disciplinas);
+        List<ItemListView> itens = new ArrayList<ItemListView>();
 
-        listDisciplinas.setAdapter(adapter);
+        for (DisciplinaData disciplina: disciplinas) {
+            itens.add(new ItemListView(disciplina.getId(), disciplina.getNome(), disciplina.toString(), R.drawable.ic_library_books_black_24dp));
+        }
+
+        AdapterListView adapterListView = new AdapterListView(getContext(), itens);
+
+        listDisciplinas.setAdapter(adapterListView);
         listDisciplinas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Toast.makeText(getContext(),
-                        "TESTE: " + disciplinas.get(i).getNome(),
-                        Toast.LENGTH_SHORT).show();
+                ItemListView item = (ItemListView) listDisciplinas.getItemAtPosition(i);
+                communicator.responde(item.getId(), new DetalhesDisciplinaFragment(), item.getTitulo());
             }
         });
     }

@@ -1,6 +1,6 @@
 package com.example.tcc.qbeaconapp.Services;
 
-import com.example.tcc.qbeaconapp.Datas.DisciplinaData;
+import com.example.tcc.qbeaconapp.Datas.SalaData;
 
 import java.util.List;
 
@@ -10,17 +10,17 @@ import retrofit2.http.Headers;
 import retrofit2.http.Path;
 
 /**
- * Created by hugoduarte on 26/03/18.
+ * Created by hugoduarte on 28/03/18.
  */
 
-public interface DisciplinaService {
+public interface SalaService {
 
     @Headers("Content-Type: application/json")
-    @GET("disciplina")
-    Call<List<DisciplinaData>>listar();
+    @GET("sala")
+    Call<List<SalaData>> listar();
 
     @Headers("Content-Type: application/json")
-    @GET("disciplina/{id}")
-    Call<DisciplinaData>buscar(@Path("id") int id);
+    @GET("sala/{id}")
+    Call<SalaData>buscar(@Path("id") int id);
 
 }

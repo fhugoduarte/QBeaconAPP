@@ -14,8 +14,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tcc.qbeaconapp.Datas.ItemListView;
 import com.example.tcc.qbeaconapp.Datas.TurmaData;
 import com.example.tcc.qbeaconapp.R;
+import com.example.tcc.qbeaconapp.Services.AdapterListView;
+import com.example.tcc.qbeaconapp.Services.Communicator;
 import com.example.tcc.qbeaconapp.Services.Config;
 import com.example.tcc.qbeaconapp.Services.ServiceGenerator;
 import com.example.tcc.qbeaconapp.Services.TurmaService;
@@ -23,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -38,12 +42,14 @@ import static android.content.Context.MODE_PRIVATE;
 public class MinhasTurmasFragment extends Fragment {
 
     private ListView listMinhasTurmas;
+    private Communicator communicator;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_minhas_turmas, container, false);
 
         listMinhasTurmas = (ListView) view.findViewById(R.id.listMinhasTurmas);
+        communicator = (Communicator) getActivity();
 
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(Config.MINHAS_TURMAS_KEY, MODE_PRIVATE);
         String turmasJson =  sharedPreferences.getString(Config.MINHAS_TURMAS_KEY, "");
@@ -125,18 +131,21 @@ public class MinhasTurmasFragment extends Fragment {
         }.getType();
         final List<TurmaData> turmas = gson.fromJson(turmasJson, collectionType);
 
-        ArrayAdapter<TurmaData> adapter =
-                new ArrayAdapter<TurmaData>(this.getContext(),
-                        android.R.layout.simple_list_item_1, turmas);
+        List<ItemListView> itens = new ArrayList<ItemListView>();
 
-        listMinhasTurmas.setAdapter(adapter);
+        for (TurmaData turma: turmas) {
+            itens.add(new ItemListView(turma.getId(), turma.toString(), turma.toString(), R.drawable.ic_school_black_24dp));
+        }
+
+        AdapterListView adapterListView = new AdapterListView(getContext(), itens);
+
+        listMinhasTurmas.setAdapter(adapterListView);
         listMinhasTurmas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                Toast.makeText(getContext(),
-                        "TESTE: " + turmas.get(i).toString(),
-                        Toast.LENGTH_SHORT).show();
+                ItemListView item = (ItemListView) listMinhasTurmas.getItemAtPosition(i);
+                communicator.responde(item.getId(), new DetalhesTurmaFragment(), item.getTitulo());
             }
         });
     }

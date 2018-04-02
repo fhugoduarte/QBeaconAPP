@@ -16,7 +16,7 @@
             android:id="@+id/imageView2"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="10dp"
             app:srcCompat="@drawable/ic_school_black_24dp"
             tools:ignore="VectorDrawableCompat"
@@ -29,7 +29,7 @@
             android:text="TURMA"
             android:textStyle="bold"
             android:textSize="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_gravity="center_horizontal"/>
 
         <TextView
@@ -63,7 +63,7 @@
             android:id="@+id/entrarButton"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:text="Entrar na turma"

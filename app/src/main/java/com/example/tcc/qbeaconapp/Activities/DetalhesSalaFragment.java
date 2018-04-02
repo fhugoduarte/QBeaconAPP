@@ -101,7 +101,7 @@ public class DetalhesSalaFragment extends Fragment {
         List<ItemListView> itens = new ArrayList<ItemListView>();
 
         for (ReservaData reserva: reservas) {
-            itens.add(new ItemListView(reserva.getId(), "", reserva.toString(), R.drawable.ic_info_black_24dp));
+            itens.add(new ItemListView(reserva.getId(), "", reserva.toStringSala(), R.drawable.ic_info_black_24dp));
         }
 
         AdapterListView adapterListView = new AdapterListView(getContext(), itens);

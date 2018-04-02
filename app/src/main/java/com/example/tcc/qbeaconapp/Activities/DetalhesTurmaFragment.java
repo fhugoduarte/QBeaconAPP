@@ -106,10 +106,10 @@ public class DetalhesTurmaFragment extends Fragment {
             reserva1.setText("Não possuí maiores detalhes");
         }else{
             if(turma.getReserva1() != null) {
-                reserva1.setText(turma.getReserva1().toString());
+                reserva1.setText(turma.getReserva1().toStringTurma());
             }
             if(turma.getReserva2() != null) {
-                reserva2.setText(turma.getReserva2().toString());
+                reserva2.setText(turma.getReserva2().toStringTurma());
             }
         }
 

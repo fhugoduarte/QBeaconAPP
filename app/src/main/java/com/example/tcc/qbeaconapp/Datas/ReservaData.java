@@ -56,9 +56,12 @@ public class ReservaData {
         this.turma = turma;
     }
 
-    @Override
-    public String toString() {
-        return "Sala: " + sala + "\n " + "Horario: " + horario + "\n" + "Turma: " + turma;
+    public String toStringTurma() {
+        return "Sala: " + sala + "\n " + "Horario: " + horario;
+    }
+
+    public String toStringSala() {
+        return "Horario: " + horario + "\n" + "Turma: " + turma;
     }
 
 }

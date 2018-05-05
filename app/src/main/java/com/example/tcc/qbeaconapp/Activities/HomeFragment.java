@@ -1,6 +1,10 @@
 package com.example.tcc.qbeaconapp.Activities;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,7 +14,9 @@ import android.widget.TextView;
 
 import com.example.tcc.qbeaconapp.R;
 
-public class HomeFragment extends Fragment{
+
+
+public class HomeFragment extends Fragment {
 
     private TextView fragmentTextView;
 
@@ -21,5 +27,4 @@ public class HomeFragment extends Fragment{
         fragmentTextView.setText("HOME FRAGMENT");
         return(view);
     }
-
 }

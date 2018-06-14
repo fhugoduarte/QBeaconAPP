@@ -287,11 +287,7 @@ public class MenuActivity extends AppCompatActivity
         Fragment fragment;
 
         if(item == null){
-            toolbar.setTitle("Home");
-            fragment = new HomeFragment();
-            fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.fragmentLayout, fragment);
-            fragmentTransaction.commit();
+            this.responde(0, new HomeFragment(), "Sala Próxima");
         }else {
             int id = item.getItemId();
 
@@ -325,11 +321,7 @@ public class MenuActivity extends AppCompatActivity
                 Intent intent = new Intent(MenuActivity.this, LoginActivity.class);
                 startActivity(intent);
             } else{
-                toolbar.setTitle("Home");
-                fragment = new HomeFragment();
-                fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.fragmentLayout, fragment);
-                fragmentTransaction.commit();
+                this.responde(0, new HomeFragment(), "Sala Próxima");
             }
         }
 
@@ -341,14 +333,14 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public void responde(int id, Fragment fragment, String titulo) {
 
-       Bundle bundle =  new Bundle();
-       bundle.putInt("id", id);
+        Bundle bundle =  new Bundle();
+        bundle.putInt("id", id);
 
-       toolbar.setTitle(titulo);
-       fragment.setArguments(bundle);
-       FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-       fragmentTransaction.replace(R.id.fragmentLayout, fragment);
-       fragmentTransaction.commit();
+        toolbar.setTitle(titulo);
+        fragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentLayout, fragment);
+        fragmentTransaction.commit();
 
     }
 
@@ -363,21 +355,8 @@ public class MenuActivity extends AppCompatActivity
                 if (beacons.size() > 0) {
                     //pegar o primeiro beacon que foi detectado e passar para o próximo
                     Beacon firstBeacon = beacons.iterator().next();
-                    //pega a primeira parte do UUID do beacon (8bits) e tira apenas a parte da informação da sala.
-                    String UUID = firstBeacon.getId1().toUuid().toString().substring(1, 8);
-                    String salaID = "";
-                    for (int i=0; i<UUID.length(); i++) {
-                        char c = UUID.charAt(i);
-                        if(c != '0'){
-                            salaID = UUID.substring(i, UUID.length());
-                            break;
-                        }
-                    }
-                    Log.i(TAG, "ID da Sala " + salaID);
-
-                    Log.i(TAG, "Distância do Beacon encontrado: " + firstBeacon.getDistance() + " metros.");
                     //chamada do método para capturar os dados mandados pelo beacon e mostrá-los na tela.
-                    //onBeaconFinded(firstBeacon);
+                    onBeaconFinded(firstBeacon);
                 }else{
                     Log.i("ERRO: ", "Não encontramos o Beacon");
                 }
@@ -391,6 +370,42 @@ public class MenuActivity extends AppCompatActivity
             beaconManager.startRangingBeaconsInRegion(new Region("myRangingUniqueId", null, null, null));
         } catch (RemoteException e) {
         }
+    }
+
+    //método para capturar os dados mandados pelo beacon e mostrá-los na tela.
+    public void onBeaconFinded(final Beacon b) {
+        //thread para atualizar os dados mandados pelo beacon e atualizá-los na tela
+        runOnUiThread(new Runnable() {
+
+            //pega a primeira parte do UUID do beacon (8bits) e tira apenas a parte da informação da sala.
+            String UUID = b.getId1().toUuid().toString().substring(0, 8);
+            //verifica se o beacon está ativado.
+            if(UUID.charAt(0) != '2'){
+                String salaID = "";
+
+                @Override
+                public void run() {
+                    for (int i=1; i<UUID.length(); i++){
+                        char c = UUID.charAt(i);
+                        if(c != '0'){
+                            salaID = UUID.substring(i, UUID.length());
+                            break;
+                        }
+                    }
+
+                    Fragment fragment = new HomeFragment();
+                    Bundle bundle =  new Bundle();
+                    bundle.putInt("id", Integer.parseInt(salaID));
+
+                    toolbar.setTitle("Sala próxima");
+                    fragment.setArguments(bundle);
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.fragmentLayout, fragment);
+                    fragmentTransaction.commit();
+
+                }
+            }
+        });
     }
 
 }

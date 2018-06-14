@@ -13,7 +13,7 @@ public class Config {
     public static final String TODAS_TURMAS_KEY = "todas_turmas_key";
     public static final String MINHAS_TURMAS_KEY = "minhas_turmas_key";
 
-    public static final String BASE_URL = "http://192.168.1.100:8080/api/";
+    public static final String BASE_URL = "http://192.168.0.57:8080/api/";
     public static final String SUCESSO_CADASTRO_USUARIO = "Usuário cadastrado com Sucesso!";
     public static final String ERRO_CADASTRO_USUARIO = "Verifique sua conexão ou o Email informado !";
     public static final String ERRO_EMAIL_SENHA = "Senha e/ou Email incorretos!";
